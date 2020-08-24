@@ -21,4 +21,8 @@ public class TimeServico {
 	public List<Time> listar(){
 		return timeRepository.findAll();
 	}
+	
+	public Time obterTime(Integer id) {
+		return timeRepository.findById(id).get();
+	}
 }
