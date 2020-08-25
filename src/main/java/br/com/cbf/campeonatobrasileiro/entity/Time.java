@@ -19,9 +19,12 @@ public class Time {
 	@Column(length = 20)
 	private String nome;
 	
-	@Column(length = 2)
-	private String estado;
-	
-	@Column(length = 3)
+	@Column(length = 4)
 	private String sigla;
+	
+	@Column(length = 2)
+	private String uf;
+	
+	@Column(length = 20)
+	private String estadio;
 }

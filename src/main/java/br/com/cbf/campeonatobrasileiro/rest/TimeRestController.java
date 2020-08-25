@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.cbf.campeonatobrasileiro.entity.Time;
 import br.com.cbf.campeonatobrasileiro.service.TimeServico;
+import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping(value = "/times")
@@ -24,12 +27,14 @@ public class TimeRestController {
 		return ResponseEntity.ok().body(timeServico.listar());
 	}
 	
+	@ApiOperation(value = "Obtém os dados de um time")
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Time> getTime(@PathVariable Integer id){
 		return ResponseEntity.ok().body(timeServico.obterTime(id));
 	}
 	
-	public ResponseEntity<Void> cadastrarTime(Time time){
+	@PostMapping
+	public ResponseEntity<Void> cadastrarTime(@RequestBody Time time){
 		timeServico.cadastrarTime(time);
 		return ResponseEntity.ok().build();
 	}
