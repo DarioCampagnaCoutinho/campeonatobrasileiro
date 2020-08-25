@@ -16,9 +16,15 @@ public class TimeServico {
 	@Autowired
 	private TimeRepository timeRepository;
 	
-	public void cadastrarTime(TimeDto time) {
+	public TimeDto cadastrarTime(TimeDto time) throws Exception {
 		Time entity = toEntity(time);
-		timeRepository.save(entity);
+		if(time.getId() == null) {
+			entity = timeRepository.save(entity);
+			return toDto(entity);
+		}else {
+			throw new Exception("Time já existe");
+		}
+		
 	}
 	
 	private Time toEntity(TimeDto time) {
@@ -35,16 +41,18 @@ public class TimeServico {
 		return timeRepository.findAll().stream().map(entity -> toDto(entity)).collect(Collectors.toList());
 	}
 	
+	public TimeDto obterTime(Integer id) {
+		return toDto(timeRepository.findById(id).get());
+	}
+	
 	private TimeDto toDto(Time entity) {
 		TimeDto dto = new TimeDto();
 		dto.setEstadio(entity.getEstadio());
 		dto.setSigla(entity.getSigla());
 		dto.setNome(entity.getNome());
 		dto.setUf(entity.getUf());
+		dto.setId(entity.getId());
 		return dto;
 	}
 
-	public TimeDto obterTime(Integer id) {
-		return toDto(timeRepository.findById(id).get());
-	}
 }
