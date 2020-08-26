@@ -27,4 +27,18 @@ public class Time {
 	
 	@Column(length = 20)
 	private String estadio;
+	
+	public Time() {
+		
+	}
+
+	public Time(Integer id, String nome, String sigla, String uf, String estadio) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.sigla = sigla;
+		this.uf = uf;
+		this.estadio = estadio;
+	}
+	
 }
