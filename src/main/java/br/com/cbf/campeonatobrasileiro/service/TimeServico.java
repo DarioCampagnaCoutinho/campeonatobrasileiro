@@ -54,5 +54,9 @@ public class TimeServico {
 		dto.setId(entity.getId());
 		return dto;
 	}
+	
+	public List<Time> findAll() {
+        return timeRepository.findAll();
+    }
 
 }
