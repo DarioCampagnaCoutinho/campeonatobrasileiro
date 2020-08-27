@@ -1,5 +1,20 @@
 package br.com.cbf.campeonatobrasileiro.dto;
 
+import lombok.Data;
+
+@Data
 public class ClassificacaoDto {
+	
+	private String time;
+    private Integer idTime;
+    private Integer posicao;
+    private Integer pontos;
+    private Integer jogos;
+    private Integer vitorias;
+    private Integer empates;
+    private Integer derrotas;
+    private Integer golsMarcados;
+    private Integer golsSofridos;
+
 
 }

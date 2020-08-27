@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,13 +128,36 @@ public class JogoServico {
 		ClassificacaoDto classificacaoDto = new ClassificacaoDto();
 		final List<Time> times = timeServico.findAll();
 		times.forEach(time -> {
-			final List<Jogo> todosJogos = jogoRepository.findAll();
-			todosJogos.forEach(jogo -> {
-				if(jogo.getGolsTime1().equals(time)) {
-					if(jogo.getGolsTime1() > jogo.getGolsTime2()) {
-						
-					}
-				}
+			final List<Jogo> jogosMandante = jogoRepository.findByTime1AndEncerrado(time, true);
+			final List<Jogo> jogosVisitante = jogoRepository.findByTime2AndEncerrado(time, true);
+			AtomicReference<Integer> vitorias = new AtomicReference<>(0);
+            AtomicReference<Integer> empates = new AtomicReference<>(0);
+            AtomicReference<Integer> derrotas = new AtomicReference<>(0);
+            AtomicReference<Integer> golsMarcados = new AtomicReference<>(0);
+            AtomicReference<Integer> golsSofridos = new AtomicReference<>(0);
+			jogosMandante.forEach(jogo -> {
+				if (jogo.getGolsTime1() > jogo.getGolsTime2()) {
+                    vitorias.getAndSet(vitorias.get() + 1);
+                } else if (jogo.getGolsTime1() < jogo.getGolsTime2()) {
+                    derrotas.getAndSet(derrotas.get() + 1);
+                } else {
+                    empates.getAndSet(empates.get() + 1);
+                }
+                golsMarcados.set(golsMarcados.get() + jogo.getGolsTime1());
+                golsSofridos.getAndSet(golsSofridos.get() + jogo.getGolsTime2());
+				
+			});
+			
+			jogosVisitante.forEach(jogo -> {
+				if (jogo.getGolsTime2() > jogo.getGolsTime1()) {
+                    vitorias.getAndSet(vitorias.get() + 1);
+                } else if (jogo.getGolsTime2() < jogo.getGolsTime1()) {
+                    derrotas.getAndSet(derrotas.get() + 1);
+                } else {
+                    empates.getAndSet(empates.get() + 1);
+                }
+                golsMarcados.set(golsMarcados.get() + jogo.getGolsTime2());
+                golsSofridos.getAndSet(golsSofridos.get() + jogo.getGolsTime1());
 			});
 		});
 		return classificacaoDto;
