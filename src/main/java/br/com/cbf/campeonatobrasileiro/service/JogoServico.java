@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.cbf.campeonatobrasileiro.dto.ClassificacaoDto;
 import br.com.cbf.campeonatobrasileiro.dto.JogoDto;
 import br.com.cbf.campeonatobrasileiro.dto.JogoFinalizadoDto;
 import br.com.cbf.campeonatobrasileiro.entity.Jogo;
@@ -121,11 +122,22 @@ public class JogoServico {
 		
 		
 	}
-    /*
-	public Object obterClassificacao() {
-		// TODO Auto-generated method stub
-		return null;
-	}*/
+    
+	public ClassificacaoDto obterClassificacao() {
+		ClassificacaoDto classificacaoDto = new ClassificacaoDto();
+		final List<Time> times = timeServico.findAll();
+		times.forEach(time -> {
+			final List<Jogo> todosJogos = jogoRepository.findAll();
+			todosJogos.forEach(jogo -> {
+				if(jogo.getGolsTime1().equals(time)) {
+					if(jogo.getGolsTime1() > jogo.getGolsTime2()) {
+						
+					}
+				}
+			});
+		});
+		return classificacaoDto;
+	}
 
 	public JogoDto obterJogo(Integer id) {
 		return toDto(jogoRepository.findById(id).get());

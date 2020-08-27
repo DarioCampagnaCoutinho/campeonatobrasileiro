@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.cbf.campeonatobrasileiro.dto.JogoDto;
 import br.com.cbf.campeonatobrasileiro.dto.JogoFinalizadoDto;
-import br.com.cbf.campeonatobrasileiro.entity.Jogo;
 import br.com.cbf.campeonatobrasileiro.service.JogoServico;
 
 @RestController
