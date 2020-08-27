@@ -3,10 +3,14 @@ package br.com.cbf.campeonatobrasileiro.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.cbf.campeonatobrasileiro.dto.JogoDto;
+import br.com.cbf.campeonatobrasileiro.dto.JogoFinalizadoDto;
 import br.com.cbf.campeonatobrasileiro.entity.Jogo;
 import br.com.cbf.campeonatobrasileiro.entity.Time;
 import br.com.cbf.campeonatobrasileiro.repository.JogoRepository;
@@ -83,8 +87,47 @@ public class JogoServico {
         jogo.setPublicoPagante(0);
         return jogo;
 	}
+	
+	private JogoDto toDto(Jogo entity) {
+        JogoDto dto = new JogoDto();
+        dto.setId(entity.getId());
+        dto.setData(entity.getData());
+        dto.setEncerrado(entity.getEncerrado());
+        dto.setGolsTime1(entity.getGolsTime1());
+        dto.setGolsTime2(entity.getGolsTime2());
+        dto.setPublicoPagante(entity.getPublicoPagante());
+        dto.setRodada(entity.getRodada());
+        dto.setTime1(timeServico.toDto(entity.getTime1()));
+        dto.setTime2(timeServico.toDto(entity.getTime2()));
+        return dto;
+    }
 
-	public List<Jogo> obterJogos() {
-		return jogoRepository.findAll();
+	public List<JogoDto> listarJogos() {
+		return jogoRepository.findAll().stream().map(entity -> toDto(entity)).collect(Collectors.toList());
+	}
+
+	public JogoDto finalizar(Integer id, JogoFinalizadoDto jogoDto) throws Exception {
+		Optional<Jogo> optionalJogo = jogoRepository.findById(id);
+		if(optionalJogo.isPresent()) {
+			final Jogo jogo = optionalJogo.get();
+			jogo.setGolsTime1(jogoDto.getGolsTime1());
+	        jogo.setGolsTime2(jogoDto.getGolsTime2());
+	        jogo.setEncerrado(true);
+	        jogo.setPublicoPagante(jogoDto.getPublicoPagante());
+			return toDto(jogoRepository.save(jogo));
+		}else {
+			throw new Exception("Jogo não existe!");
+		}
+		
+		
+	}
+    /*
+	public Object obterClassificacao() {
+		// TODO Auto-generated method stub
+		return null;
+	}*/
+
+	public JogoDto obterJogo(Integer id) {
+		return toDto(jogoRepository.findById(id).get());
 	}
 }

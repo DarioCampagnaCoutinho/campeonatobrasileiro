@@ -45,7 +45,7 @@ public class TimeServico {
 		return toDto(timeRepository.findById(id).get());
 	}
 	
-	private TimeDto toDto(Time entity) {
+	public TimeDto toDto(Time entity) {
 		TimeDto dto = new TimeDto();
 		dto.setEstadio(entity.getEstadio());
 		dto.setSigla(entity.getSigla());
