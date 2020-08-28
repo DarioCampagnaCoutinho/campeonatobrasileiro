@@ -3,7 +3,7 @@ package br.com.cbf.campeonatobrasileiro.dto;
 import lombok.Data;
 
 @Data
-public class ClassificacaoTimeDto {
+public class ClassificacaoTimeDto implements Comparable<ClassificacaoTimeDto> {
 	
 	private String time;
     private Integer idTime;
@@ -15,6 +15,11 @@ public class ClassificacaoTimeDto {
     private Integer derrotas;
     private Integer golsMarcados;
     private Integer golsSofridos;
+    
+	@Override
+	public int compareTo(ClassificacaoTimeDto arg0) {
+		return this.getPontos().compareTo(this.getPontos());
+	}
 
 
 }
