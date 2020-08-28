@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.cbf.campeonatobrasileiro.dto.ClassificacaoDto;
 import br.com.cbf.campeonatobrasileiro.dto.JogoDto;
 import br.com.cbf.campeonatobrasileiro.dto.JogoFinalizadoDto;
 import br.com.cbf.campeonatobrasileiro.service.JogoServico;
@@ -39,11 +40,10 @@ public class JogoRestController {
 		return ResponseEntity.ok().body(jogoServico.finalizar(id, jogoDto));
 	}
 	
-	/*
 	@GetMapping(value = "/classificacao")
-	public ResponseEntity<JogoDto> classificacao(){
+	public ResponseEntity<ClassificacaoDto> classificacao(){
 		return ResponseEntity.ok().body(jogoServico.obterClassificacao());
-	}*/
+	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<JogoDto> obterJogo(@PathVariable Integer id){

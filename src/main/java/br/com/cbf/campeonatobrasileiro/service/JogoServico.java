@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.cbf.campeonatobrasileiro.dto.ClassificacaoDto;
+import br.com.cbf.campeonatobrasileiro.dto.ClassificacaoTimeDto;
 import br.com.cbf.campeonatobrasileiro.dto.JogoDto;
 import br.com.cbf.campeonatobrasileiro.dto.JogoFinalizadoDto;
 import br.com.cbf.campeonatobrasileiro.entity.Jogo;
@@ -159,6 +160,16 @@ public class JogoServico {
                 golsMarcados.set(golsMarcados.get() + jogo.getGolsTime2());
                 golsSofridos.getAndSet(golsSofridos.get() + jogo.getGolsTime1());
 			});
+			ClassificacaoTimeDto classificacaoTimeDto = new ClassificacaoTimeDto();
+			classificacaoTimeDto.setIdTime(time.getId());
+			classificacaoTimeDto.setTime(time.getNome());
+			classificacaoTimeDto.setDerrotas(derrotas.get());
+			classificacaoTimeDto.setPontos((vitorias.get() * 3) + empates.get());
+			classificacaoTimeDto.setEmpates(empates.get());
+			classificacaoTimeDto.setGolsMarcados(golsMarcados.get());
+			classificacaoTimeDto.setGolsSofridos(golsSofridos.get());
+			classificacaoTimeDto.setJogos(derrotas.get() + empates.get() + vitorias.get());
+			classificacaoDto.getTimes().add(classificacaoTimeDto);
 		});
 		return classificacaoDto;
 	}
